@@ -107,7 +107,76 @@ const Alerts = () => {
           <Summary title="Critical Alerts" value={sevChartData[0].value} color="red" />
           <Summary title="Warnings"        value={sevChartData[1].value} color="yellow" />
         </div>
+ {/* ── ALERTS TABLE ── */}
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
 
+          <div className="px-6 py-4 bg-red-600 text-white font-semibold flex justify-between items-center">
+            <span>Alerts List</span>
+            <span className="text-sm font-normal opacity-80">
+              Showing {filteredAlerts.length} alert{filteredAlerts.length !== 1 ? "s" : ""}
+            </span>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="px-5 py-3 text-left text-gray-600 font-semibold">ID</th>
+                  <th className="px-5 py-3 text-left text-gray-600 font-semibold">Fridge</th>
+                  <th className="px-5 py-3 text-left text-gray-600 font-semibold">Zone</th>
+                  <th className="px-5 py-3 text-left text-gray-600 font-semibold">City</th>
+                  <th className="px-5 py-3 text-left text-gray-600 font-semibold">Type</th>
+                  <th className="px-5 py-3 text-center text-gray-600 font-semibold">Severity</th>
+                  <th className="px-5 py-3 text-center text-gray-600 font-semibold">Status</th>
+                  <th className="px-5 py-3 text-center text-gray-600 font-semibold">Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredAlerts.length === 0 ? (
+                  <tr>
+                    <td colSpan={8} className="text-center py-10 text-gray-400">
+                      No alerts match your search or filter.
+                    </td>
+                  </tr>
+                ) : (
+                  filteredAlerts.map((a, i) => (
+                    <tr key={i} className="border-b border-gray-50 hover:bg-red-50 transition-colors">
+                      <td className="px-5 py-3 text-xs text-gray-500 font-semibold">{a.id}</td>
+                      <td className="px-5 py-3 font-semibold text-red-600">{a.fridgeId}</td>
+                      <td className="px-5 py-3">
+                        <span className="px-2 py-1 rounded-full text-xs bg-gray-100 text-gray-600 font-medium">
+                          {a.zone}
+                        </span>
+                      </td>
+                      <td className="px-5 py-3 text-gray-700">{a.city}</td>
+                      <td className="px-5 py-3 font-medium text-gray-800">{a.type}</td>
+                      <td className="px-5 py-3 text-center">
+                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                          a.severity === "Critical"
+                            ? "bg-red-100 text-red-600"
+                            : "bg-yellow-100 text-yellow-600"
+                        }`}>
+                          {a.severity}
+                        </span>
+                      </td>
+                      <td className="px-5 py-3 text-center">
+                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                          a.status === "Active"
+                            ? "bg-red-100 text-red-600 animate-pulse"
+                            : "bg-green-100 text-green-600"
+                        }`}>
+                          {a.status}
+                        </span>
+                      </td>
+                      <td className="px-5 py-3 text-center text-xs text-gray-400">{a.time}</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+
+        </div>
         {/* ── CHARTS ROW ── */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
@@ -184,76 +253,7 @@ const Alerts = () => {
 
         </div>
 
-        {/* ── ALERTS TABLE ── */}
-        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-
-          <div className="px-6 py-4 bg-red-600 text-white font-semibold flex justify-between items-center">
-            <span>Alerts List</span>
-            <span className="text-sm font-normal opacity-80">
-              Showing {filteredAlerts.length} alert{filteredAlerts.length !== 1 ? "s" : ""}
-            </span>
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="bg-gray-100">
-                <tr>
-                  <th className="px-5 py-3 text-left text-gray-600 font-semibold">ID</th>
-                  <th className="px-5 py-3 text-left text-gray-600 font-semibold">Fridge</th>
-                  <th className="px-5 py-3 text-left text-gray-600 font-semibold">Zone</th>
-                  <th className="px-5 py-3 text-left text-gray-600 font-semibold">City</th>
-                  <th className="px-5 py-3 text-left text-gray-600 font-semibold">Type</th>
-                  <th className="px-5 py-3 text-center text-gray-600 font-semibold">Severity</th>
-                  <th className="px-5 py-3 text-center text-gray-600 font-semibold">Status</th>
-                  <th className="px-5 py-3 text-center text-gray-600 font-semibold">Time</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredAlerts.length === 0 ? (
-                  <tr>
-                    <td colSpan={8} className="text-center py-10 text-gray-400">
-                      No alerts match your search or filter.
-                    </td>
-                  </tr>
-                ) : (
-                  filteredAlerts.map((a, i) => (
-                    <tr key={i} className="border-b border-gray-50 hover:bg-red-50 transition-colors">
-                      <td className="px-5 py-3 text-xs text-gray-500 font-semibold">{a.id}</td>
-                      <td className="px-5 py-3 font-semibold text-red-600">{a.fridgeId}</td>
-                      <td className="px-5 py-3">
-                        <span className="px-2 py-1 rounded-full text-xs bg-gray-100 text-gray-600 font-medium">
-                          {a.zone}
-                        </span>
-                      </td>
-                      <td className="px-5 py-3 text-gray-700">{a.city}</td>
-                      <td className="px-5 py-3 font-medium text-gray-800">{a.type}</td>
-                      <td className="px-5 py-3 text-center">
-                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                          a.severity === "Critical"
-                            ? "bg-red-100 text-red-600"
-                            : "bg-yellow-100 text-yellow-600"
-                        }`}>
-                          {a.severity}
-                        </span>
-                      </td>
-                      <td className="px-5 py-3 text-center">
-                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                          a.status === "Active"
-                            ? "bg-red-100 text-red-600 animate-pulse"
-                            : "bg-green-100 text-green-600"
-                        }`}>
-                          {a.status}
-                        </span>
-                      </td>
-                      <td className="px-5 py-3 text-center text-xs text-gray-400">{a.time}</td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-
-        </div>
+       
       </div>
     </DashboardLayout>
   );
